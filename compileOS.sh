@@ -4,7 +4,7 @@ dd if=bootload of=diskc.img conv=notrunc
 
 bcc -c -ansi -o kernel_c.o kernel.c
 as86 kernel.asm -o kernel_asm.o
-ld86 -o kernel -d kernelc.o kernel_asm.o
+ld86 -o kernel -d kernel_c.o kernel_asm.o
 
 as86 userlib.asm -o userlib.o
 
