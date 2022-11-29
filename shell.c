@@ -1,3 +1,5 @@
+//del dont work, dir does, create textfl doesnt, copy somewhat does and i see a file added to the dir as (U V W)
+
 void main(){
     char buffer[13312];
     char line[80];
@@ -95,7 +97,7 @@ void main(){
    }
     syscall(3, copyFrom, buffer, sectorReader);
     if(buffer[0] =='\0'){
-    syscall(0, "could no locate file to copy\r\n");
+    syscall(0, "could not locate the file to copy\r\n");
   }
      else{
    syscall(8, copyTo, sectorReader);
