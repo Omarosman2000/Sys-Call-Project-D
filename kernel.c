@@ -20,6 +20,7 @@ void writeFile(char*, char*, int);
 //print string cant be used to debug now in kernel, becuase its inaccesible when it goes to kernel, when we call it back it is still inaccesable nov 10:
 //use printChar instead this works because its only putting a value not an adress for that value
 void main() {
+    printString("about to start\n");
     /*char line[80];
     char buffer[13312];
     int sectorsRead;
@@ -45,7 +46,9 @@ void main() {
     else
         interrupt(0x21, 0,"messag not found in this sector\r\n",0,0);
 */
+    
     makeInterrupt21();
+    printString("about to start shell \n");
     //interrupt(0x21,8,"this is a test message","testmg",3);
     interrupt(0x21,4,"shell",0,0);
     while(1);
@@ -147,7 +150,7 @@ void handleInterrupt21(int ax, int bx, int cx, int dx){
 
     else if( ax==7){
 
-   	deleteFile(bx);
+   	    deleteFile(bx);
     }
 
    else if(ax==8){
@@ -187,6 +190,7 @@ void readFile( char*filename, char*buffer){
          }
       }
      if(foundfile==1){
+        printString("file has been found \n");
 
 break;
 
@@ -196,6 +200,7 @@ break;
 //handle match=1 case
        if(foundfile==0){
      *sectorsred=0;
+        printString("file  was not found \n");
       return;
 }
        for(i=6; i<26; i++){
@@ -211,7 +216,7 @@ break;
 
 void executeProgram(char*name){
        char buffer[13312];
-        int i;
+        int i=0;
         int segment =0x2000;
            readFile(name,buffer);
         while(i<13312){
@@ -246,14 +251,15 @@ void writeSector(char* buffer, int sector){
 void deleteFile(char* filename){
    char dir[512];
    char map[512];
-    // dir[0] = '\0';
-    int i = 0;
-  //  for (i=0; i<13312; i++){
-  //    dir[0]='\0';
-  //    if(filename[i]!=dir[0]){  // check of array at i == 0 or not 
- //      map[i] = 0;              // if the array at i does not iqual 0 set the map array at i to 0
-   //   }
-  //  }
+   int i = 0;
+   dir[0] = '\0';
+   
+   for (i=0; i<13312; i++){
+      dir[0]='\0';
+      if(filename[i]!=dir[0]){  // check of array at i == 0 or not 
+       map[i] = 0;              // if the array at i does not iqual 0 set the map array at i to 0
+      }
+    }
 }
  void writeFile(char* buffer, char* filename, int numberOfSectors){
           char dir[512];
@@ -289,9 +295,8 @@ void deleteFile(char* filename){
     }
 
           writeSector(dir, 2);
-          writeSector(map, 1);
+         writeSector(map, 1);
           
        
 }
      
-
